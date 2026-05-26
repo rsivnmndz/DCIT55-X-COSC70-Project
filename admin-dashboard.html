@@ -5,365 +5,649 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HanapDormIndang | Admin Dashboard</title>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
+        :root {
+            --cyan: #00d9ff;
+            --cyan-soft: #4fdcff;
+            --glass: rgba(12, 18, 32, 0.72);
+            --glass-border: rgba(255, 255, 255, 0.14);
+            --text: #f1f5f9;
+            --muted: #94a3b8;
+            --success: #34d399;
+            --warning: #fbbf24;
+            --radius: 16px;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
         }
 
         body {
             min-height: 100vh;
-            background: url('./images/bg.png') no-repeat center center/cover;
-            background-attachment: fixed;
-            overflow: hidden;
+            font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+            color: var(--text);
+            background: url('./images/bg.png') no-repeat center center fixed;
+            background-size: cover;
         }
 
-        .overlay {
-            width: 100%;
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(160deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 30, 50, 0.55) 100%);
+            z-index: 0;
+        }
+
+        .shell {
+            position: relative;
+            z-index: 1;
             min-height: 100vh;
-            background: rgba(0, 0, 0, 0.55);
-            padding: 1.25rem 3rem 3rem;
+            padding: 1rem 2rem 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         /* ── Navbar ── */
-        .navbar{
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            margin-top:-20px;
-            padding:0 50px 8px 50px;
-            border-bottom:1px solid rgba(255,255,255,0.25);
-            margin-left:-50px;
-            margin-right:-50px;
-            position:sticky;
-            top:0;
-            z-index:1000;
-            backdrop-filter:blur(12px);
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
         }
 
         .left-nav {
             display: flex;
             align-items: center;
-            gap: 0.3rem;
+            gap: 0.5rem;
         }
 
         .logo {
-            width: 5rem;
+            width: 4.5rem;
         }
 
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 0.9rem;
+            gap: 0.35rem;
         }
 
         .nav-links a {
-            color: white;
+            color: var(--text);
             text-decoration: none;
             font-size: 0.85rem;
-            padding: 0.45rem 0.9rem;
-            border-radius: 0.625rem;
-            transition: 0.3s;
+            padding: 0.5rem 0.9rem;
+            border-radius: 10px;
+            transition: 0.25s;
         }
 
-        .nav-links a:hover {
-            color: #4fdcff;
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--cyan-soft);
+            background: rgba(0, 217, 255, 0.08);
         }
 
-        .signin-top {
-            color: white;
-            text-decoration: none;
-            font-size: 0.85rem;
-            padding: 0.5rem 1.1rem;
-            border-radius: 0.75rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.05);
-            transition: 0.3s;
-        }
-
-        .signin-top:hover {
-            border: 1px solid #00d9ff;
-            box-shadow: 0 0 0.6rem rgba(0, 217, 255, 0.8), 0 0 1.2rem rgba(0, 217, 255, 0.5);
-            color: #4fdcff;
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        /* ── Dashboard wrapper ── */
-        .dashboard-wrapper {
+        .nav-actions {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            padding: 0.75rem 1.25rem 1rem;
-            color: white;
-        }
-
-        /* ── Logo name ── */
-        .logo-name {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 0.75rem;
-        }
-
-        .logo-name img {
-            width: 10rem;
-            filter: brightness(2.0);
-        }
-
-        /* ── Admin card outer shell ── */
-        .admin-card {
-            width: 100%;
-            max-width: 30rem;
-            border-radius: 1.5rem;
-            box-shadow: 0 0 2rem rgba(0, 132, 255, 0.2), 0 0.625rem 1.875rem rgba(0, 0, 0, 0.5);
-            display: flex;
-            flex-direction: column;
             gap: 0.75rem;
         }
 
-        /* ── Card Header ── */
-        .card-header {
-            border: 2px solid #1d4ed8;
-            border-radius: 1.2rem 1.2rem 0.5rem 0.5rem;
-            padding: 0.875rem;
-            text-align: center;
-            background: transparent;
-            backdrop-filter: blur(6px);
+        .signin-top {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.05);
+            transition: 0.25s;
         }
 
-        .card-header h2 {
-            font-size: 1.2rem;
-            margin: 0 0 0.5rem;
-            letter-spacing: 0.06em;
-            color: #fff;
+        .signin-top:hover {
+            border-color: var(--cyan);
+            color: var(--cyan-soft);
+            box-shadow: 0 0 12px rgba(0, 217, 255, 0.35);
         }
 
-        .card-header p {
-            font-size: 0.8rem;
-            color: #cbd5e0;
-            margin: 0;
-            line-height: 1.4;
-        }
-
-        /* ── Card Body ── */
-        .card-body {
-            padding: 0 0.75rem 0.75rem;
-            border: 2px solid #1d4ed8;
-            border-radius: 0.5rem 0.5rem 1.2rem 1.2rem;
-            background: transparent;
-            backdrop-filter: blur(6px);
-        }
-
-        .listing-title {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #cbd5e0;
-            padding: 0.9rem 0;
-        }
-
-        /* ── Stats grid ── */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            border-top: 1px solid #1d4ed8;
-            border-bottom: 1px solid #1d4ed8;
-            margin-bottom: 1.25rem;
-        }
-
-        .grid-item {
-            padding: 0.7rem 0.625rem;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #e2e8f0;
-            border-bottom: 1px solid #1d4ed8;
-        }
-
-        .grid-item span {
-            font-weight: bold;
-            color: #fff;
-        }
-
-        .grid-item:nth-child(odd) {
-            border-right: 1px solid #1d4ed8;
-        }
-
-        .grid-item:nth-last-child(-n+2) {
-            border-bottom: none;
-        }
-
-        .highlights-link {
-            cursor: pointer;
-            color: #e2e8f0;
-        }
-
-        .highlights-link u {
-            color: #3b82f6;
-        }
-
-        /* ── Action controls ── */
-        .action-controls {
+        /* ── Page header ── */
+        .page-header {
             display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            padding: 0 0.625rem;
-        }
-
-        .action-btn {
-            border: none;
-            font-weight: bold;
-            font-size: 0.75rem;
-            cursor: pointer;
-            display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
+            align-items: flex-end;
+            gap: 1rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .page-header h1 {
+            font-size: clamp(1.6rem, 4vw, 2.1rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .page-header h1 span {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: var(--muted);
+            margin-top: 0.35rem;
+        }
+
+        .role-badge {
+            display: inline-flex;
             align-items: center;
-            padding: 0.75rem 1.25rem;
-            border-radius: 0.75rem;
-            transition: opacity 0.2s, box-shadow 0.2s;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-        }
-
-        .action-btn:hover {
-            opacity: 0.88;
-        }
-
-        .blue-pill {
-            background: linear-gradient(90deg, #0055cc, #0084ff);
-            color: #ffffff;
-            box-shadow: 0 0 0.75rem rgba(0, 132, 255, 0.4);
-        }
-
-        .blue-pill:hover {
-            box-shadow: 0 0 1.2rem rgba(0, 132, 255, 0.7);
-        }
-
-        .btn-icons {
-            font-size: 0.9rem;
-            display: flex;
-            gap: 0.6rem;
-            opacity: 0.85;
-            align-items: center;
-        }
-
-        .application-link {
-            text-align: center;
-            margin: 0.25rem 0;
-        }
-
-        .application-link a {
-            color: #3b82f6;
+            gap: 0.4rem;
+            padding: 0.45rem 0.9rem;
+            border-radius: 999px;
             font-size: 0.75rem;
-            text-decoration: underline;
-            font-weight: bold;
-            letter-spacing: 0.04em;
-            transition: color 0.2s;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            background: rgba(0, 217, 255, 0.12);
+            border: 1px solid rgba(0, 217, 255, 0.35);
+            color: var(--cyan-soft);
         }
 
-        .application-link a:hover {
-            color: #60a5fa;
+        /* ── Property banner ── */
+        .property-banner {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1.1rem 1.35rem;
+            margin-bottom: 1.5rem;
+            border-radius: var(--radius);
+            background: var(--glass);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow);
         }
 
-        .portal-btn {
-            background: linear-gradient(90deg, #1a3a9e, #1d4ed8);
-            color: #ffffff;
-            border-radius: 50px;
-            justify-content: center;
-            padding: 0.875rem 1.25rem;
-            font-size: 0.7rem;
-            letter-spacing: 0.05em;
-            box-shadow: 0 0 1rem rgba(29, 78, 216, 0.5);
+        .property-info h2 {
+            font-size: 1.05rem;
+            font-weight: 600;
             margin-bottom: 0.25rem;
         }
 
-        .portal-btn:hover {
-            box-shadow: 0 0 1.5rem rgba(29, 78, 216, 0.8);
+        .property-info p {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .property-info strong {
+            color: var(--cyan-soft);
+        }
+
+        .occupancy-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 1rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+        }
+
+        .occupancy-pill .ring {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: conic-gradient(var(--cyan) 0deg 240deg, rgba(255,255,255,0.1) 240deg 360deg);
+            display: grid;
+            place-items: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .occupancy-pill .ring::after {
+            content: "";
+            position: absolute;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(12, 18, 32, 0.95);
+        }
+
+        .occupancy-pill .ring {
+            position: relative;
+        }
+
+        .occupancy-pill .ring span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .occupancy-pill .label {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .occupancy-pill .label b {
+            display: block;
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        /* ── Stats grid ── */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            padding: 1.15rem 1.2rem;
+            border-radius: var(--radius);
+            background: var(--glass);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--glass-border);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(0, 217, 255, 0.35);
+        }
+
+        .stat-card .icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            background: rgba(0, 217, 255, 0.12);
+            color: var(--cyan-soft);
+        }
+
+        .stat-card .value {
+            font-size: 1.65rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-card .label {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .stat-card.highlight .value {
+            color: var(--cyan-soft);
+        }
+
+        /* ── Main grid ── */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 1.25rem;
+            align-items: start;
+        }
+
+        .panel {
+            border-radius: var(--radius);
+            background: var(--glass);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .panel-head {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-head h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .panel-head a {
+            font-size: 0.8rem;
+            color: var(--cyan-soft);
+            text-decoration: none;
+        }
+
+        .panel-head a:hover {
+            text-decoration: underline;
+        }
+
+        .panel-body {
+            padding: 1rem 1.25rem 1.25rem;
+        }
+
+        /* ── Action buttons ── */
+        .actions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            width: 100%;
+            padding: 0.95rem 1.1rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: 0.25s;
+            text-align: left;
+        }
+
+        .action-btn:hover {
+            border-color: rgba(0, 217, 255, 0.45);
+            background: rgba(0, 217, 255, 0.08);
+            box-shadow: 0 0 16px rgba(0, 217, 255, 0.15);
+        }
+
+        .action-btn .btn-icons {
+            display: flex;
+            gap: 0.5rem;
+            color: var(--cyan-soft);
+            opacity: 0.9;
+        }
+
+        .action-btn.primary {
+            margin-top: 0.5rem;
+            justify-content: center;
+            border: none;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #0099cc, var(--cyan) 55%, #e0f7ff);
+            color: #0a1628;
+            font-size: 0.72rem;
+            padding: 1rem 1.25rem;
+            box-shadow: 0 4px 20px rgba(0, 217, 255, 0.35);
+        }
+
+        .action-btn.primary:hover {
+            transform: scale(1.01);
+            box-shadow: 0 6px 28px rgba(0, 217, 255, 0.5);
+        }
+
+        /* ── Applications sidebar ── */
+        .app-summary {
+            text-align: center;
+            padding: 0.5rem 0 1rem;
+        }
+
+        .app-count {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--cyan-soft);
+            line-height: 1;
+        }
+
+        .app-count small {
+            font-size: 0.85rem;
+            color: var(--muted);
+            font-weight: 400;
+        }
+
+        .app-breakdown {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.65rem;
+            margin-bottom: 1rem;
+        }
+
+        .app-chip {
+            padding: 0.75rem;
+            border-radius: 12px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border);
+        }
+
+        .app-chip .num {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .app-chip .num.approved { color: var(--success); }
+        .app-chip .num.pending { color: var(--warning); }
+
+        .app-chip .lbl {
+            font-size: 0.72rem;
+            color: var(--muted);
+            margin-top: 0.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .app-link {
+            display: block;
+            text-align: center;
+            padding: 0.65rem;
+            margin-bottom: 0.75rem;
+            border-radius: 10px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--cyan-soft);
+            text-decoration: none;
+            background: rgba(0, 217, 255, 0.08);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            transition: 0.2s;
+        }
+
+        .app-link:hover {
+            background: rgba(0, 217, 255, 0.15);
+        }
+
+        /* ── Quick tips ── */
+        .tip-bar {
+            margin-top: 1.5rem;
+            padding: 0.85rem 1.15rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.65rem;
+            font-size: 0.82rem;
+            color: var(--muted);
+            background: rgba(0, 217, 255, 0.06);
+            border: 1px solid rgba(0, 217, 255, 0.15);
+        }
+
+        .tip-bar i {
+            color: var(--cyan-soft);
+            margin-top: 0.1rem;
+        }
+
+        .tip-bar strong {
+            color: var(--text);
         }
 
         /* ── Responsive ── */
-        @media (max-width: 480px) {
-            .overlay { padding: 1rem 1rem 2rem; }
-            .admin-card { max-width: 100%; }
-            .logo-name img { width: 9rem; }
-            .nav-links { display: none; }
+        @media (max-width: 900px) {
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .shell {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+
+            .property-banner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="overlay">
+    <div class="shell">
 
         <nav class="navbar">
             <div class="left-nav">
                 <img src="images/logo.png" alt="Logo" class="logo">
                 <ul class="nav-links">
                     <li><a href="homepage.html">Home</a></li>
-                    <li><a href="listings.html">Listings</a></li>
+                    <li><a href="listings.php">Listings</a></li>
+                    <li><a href="admin-dashboard.html" class="active">Dashboard</a></li>
                 </ul>
             </div>
-            <a href="register.html" class="signin-top">Sign Out</a>
+            <div class="nav-actions">
+                <span class="role-badge"><i class="fa-solid fa-building"></i> Dorm Owner</span>
+                <a href="logout.php" class="signin-top">Sign Out</a>
+            </div>
         </nav>
 
-        <main class="dashboard-wrapper">
-
-            <div class="logo-name">
-                <img src="images/logo.png" alt="Hanap Dorm Indang">
+        <header class="page-header">
+            <div>
+                <h1>
+                    Admin Dashboard
+                    <span>Manage properties, applications, and bookings near CvSU Main Campus</span>
+                </h1>
             </div>
+        </header>
 
-            <div class="admin-card">
-
-                <div class="card-header">
-                    <h2>ADMIN DASHBOARD</h2>
-                    <p>Manage your properties, application and bookings near CvSU - Main Campus</p>
+        <section class="property-banner">
+            <div class="property-info">
+                <h2>Donum Dei Residence</h2>
+                <p>Listing management: <strong>16 / 24</strong> units published &middot; Indang, Cavite</p>
+            </div>
+            <div class="occupancy-pill">
+                <div class="ring" title="Occupancy"><span>67%</span></div>
+                <div class="label">
+                    Occupancy
+                    <b>32 / 35 beds</b>
                 </div>
+            </div>
+        </section>
 
-                <div class="card-body">
+        <section class="stats-row">
+            <article class="stat-card">
+                <div class="icon"><i class="fa-solid fa-bed"></i></div>
+                <div class="value">35</div>
+                <div class="label">Total Beds</div>
+            </article>
+            <article class="stat-card highlight">
+                <div class="icon"><i class="fa-solid fa-door-open"></i></div>
+                <div class="value">8</div>
+                <div class="label">Total Rooms</div>
+            </article>
+            <article class="stat-card">
+                <div class="icon"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="value">3</div>
+                <div class="label">Available Beds</div>
+            </article>
+            <article class="stat-card">
+                <div class="icon"><i class="fa-solid fa-key"></i></div>
+                <div class="value">3</div>
+                <div class="label">Available Rooms</div>
+            </article>
+        </section>
 
-                    <div class="listing-title">
-                        Listing management: <strong>16/24 Donum Dei residence</strong>
-                    </div>
+        <div class="dashboard-grid">
 
-                    <div class="stats-grid">
-                        <div class="grid-item">Total Beds: <span>35</span></div>
-                        <div class="grid-item highlights-link">Total Rooms: <u><span>8</span></u></div>
-                        <div class="grid-item">Available Beds: <span>3</span></div>
-                        <div class="grid-item">Available Rooms: <span>3</span></div>
-                    </div>
-
-                    <div class="action-controls">
-
-                        <button class="action-btn blue-pill">
-                            <span>CHANGE PASSWORD</span>
+            <section class="panel">
+                <div class="panel-head">
+                    <h3><i class="fa-solid fa-sliders"></i> Quick Actions</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="actions-list">
+                        <button class="action-btn" type="button">
+                            <span>Change Password</span>
                             <span class="btn-icons">
-                                <i class="fa-solid fa-eye-slash"></i>
+                                <i class="fa-solid fa-lock"></i>
                                 <i class="fa-solid fa-pen"></i>
                             </span>
                         </button>
 
-                        <button class="action-btn blue-pill">
-                            <span>EDIT DORM DETAILS</span>
+                        <button class="action-btn" type="button">
+                            <span>Edit Dorm Details</span>
                             <span class="btn-icons">
                                 <i class="fa-solid fa-image"></i>
+                                <i class="fa-solid fa-pen-to-square"></i>
                             </span>
                         </button>
 
-                        <div class="application-link">
-                            <a href="#">STUDENT APPLICATION: 67 (10 APPROVED)</a>
-                        </div>
-
-                        <button class="action-btn portal-btn">
-                            MANAGE APPLICANT PORTAL &amp; REVIEW PROFILES
+                        <button class="action-btn" type="button">
+                            <span>Update Room Availability</span>
+                            <span class="btn-icons">
+                                <i class="fa-solid fa-calendar-check"></i>
+                            </span>
                         </button>
 
+                        <button class="action-btn primary" type="button">
+                            Manage Applicant Portal &amp; Review Profiles
+                        </button>
                     </div>
-
                 </div>
-            </div>
-        </main>
+            </section>
+
+            <aside class="panel">
+                <div class="panel-head">
+                    <h3>Applications</h3>
+                    <a href="#">View all</a>
+                </div>
+                <div class="panel-body">
+                    <div class="app-summary">
+                        <div class="app-count">67 <small>total</small></div>
+                    </div>
+                    <div class="app-breakdown">
+                        <div class="app-chip">
+                            <div class="num approved">10</div>
+                            <div class="lbl">Approved</div>
+                        </div>
+                        <div class="app-chip">
+                            <div class="num pending">57</div>
+                            <div class="lbl">Pending</div>
+                        </div>
+                    </div>
+                    <a class="app-link" href="#">
+                        Student Applications &mdash; Review Queue
+                    </a>
+                    <button class="action-btn primary" type="button" style="width:100%;">
+                        Open Applicant Portal
+                    </button>
+                </div>
+            </aside>
+
+        </div>
+
+        <div class="tip-bar">
+            <i class="fa-solid fa-circle-info"></i>
+            <p><strong>Tip:</strong> Keep room availability updated so students see accurate listings on HanapDormIndang. Pending applications older than 7 days are highlighted in the review queue.</p>
+        </div>
+
     </div>
 </body>
 

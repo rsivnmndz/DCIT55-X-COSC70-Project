@@ -231,6 +231,20 @@
             text-decoration:underline;
         }
 
+        .alert{
+            padding:10px 12px;
+            border-radius:10px;
+            margin-bottom:14px;
+            font-size:13px;
+            line-height:1.4;
+        }
+
+        .alert-error{
+            background:rgba(255,80,80,0.15);
+            border:1px solid rgba(255,100,100,0.5);
+            color:#ffb3b3;
+        }
+
     </style>
 </head>
 
@@ -259,15 +273,16 @@
             </h1>
 
             <section class="card">
-                <form>
+                <div id="formAlert" class="alert" style="display:none;"></div>
+                <form method="POST" action="register.php">
                     <div class="form-group">
                         <label>First Name</label>
-                        <input type="text" placeholder="First name" required>
+                        <input type="text" name="first_name" placeholder="First name" required>
                     </div>
 
                     <div class="form-group">
                         <label>Last Name</label>
-                        <input type="text" placeholder="Last name" required>
+                        <input type="text" name="last_name" placeholder="Last name" required>
                     </div>
 
                     <div class="form-group">
@@ -276,12 +291,12 @@
                         <div class="role-select">
 
                             <label class="role-option">
-                                <input type="radio" name="role">
+                                <input type="radio" name="role" value="student" required>
                                 <span>Student</span>
                             </label>
 
                             <label class="role-option">
-                                <input type="radio" name="role">
+                                <input type="radio" name="role" value="dorm_owner" required>
                                 <span>Dorm Owner</span>
                             </label>
 
@@ -290,17 +305,17 @@
 
                     <div class="form-group">
                         <label>Email Address</label>
-                        <input type="email" placeholder="example@gmail.com" required>
+                        <input type="email" name="email" placeholder="example@gmail.com" required>
                     </div>
 
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" placeholder="Create password" required>
+                        <input type="password" name="password" placeholder="Create password" required minlength="6">
                     </div>
 
                     <div class="form-group">
                         <label>Confirm Password</label>
-                        <input type="password" placeholder="Repeat password" required>
+                        <input type="password" name="confirm_password" placeholder="Repeat password" required minlength="6">
                     </div>
 
                     <button class="btn" type="submit">
@@ -315,5 +330,18 @@
             </section>
         </div>
     </div>
+
+    <script>
+        (function () {
+            const params = new URLSearchParams(window.location.search);
+            const error = params.get('error');
+            if (!error) return;
+
+            const alert = document.getElementById('formAlert');
+            alert.style.display = 'block';
+            alert.textContent = error;
+            alert.classList.add('alert-error');
+        })();
+    </script>
 </body>
 </html>
