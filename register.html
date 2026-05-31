@@ -19,6 +19,7 @@
             background: url('./images/bg.png') no-repeat center center fixed;
             background-size: cover;
             overflow-y: auto;
+            background-attachment: fixed;
         }
 
         .overlay{
@@ -229,6 +230,71 @@
 
         .extra a:hover{
             text-decoration:underline;
+        }
+
+        @media (max-width: 768px) {
+            .overlay{
+                padding: 1rem 1rem 2rem;
+            }
+
+            .navbar{
+                flex-direction:column;
+                gap:12px;
+                padding:10px 15px;
+                margin-left:-15px;
+                margin-right:-15px;
+                margin-top:0;
+            }
+
+            .left-nav{
+                flex-direction:column;
+                gap:10px;
+            }
+
+            .nav-links{
+                justify-content:center;
+                flex-wrap:wrap;
+            }
+
+            .logo{
+                width:4rem;
+            }
+
+            .page{
+                padding:15px 0 30px;
+            }
+
+            .page-title{
+                font-size:26px;
+                margin-bottom:20px;
+            }
+
+            .card{
+                width:100%;
+                max-width:none;
+                padding:20px;
+                border-radius:18px;
+            }
+
+            .role-select{
+                flex-direction:column;
+            }
+
+            .role-option{
+                width:100%;
+            }
+
+            input{
+                font-size:16px;
+            }
+
+            .btn{
+                font-size:15px;
+            }
+
+            .extra{
+                font-size:13px;
+            }
         }
 
     </style>
