@@ -2,7 +2,12 @@
 session_start();
 include ("./database/database.php");
 
-$sql = $conn->prepare("SELECT * FROM dorms WHERE available_rooms > 0");
+$sql = $conn->prepare(
+    "SELECT d.*, u.first_name AS owner_first_name, u.last_name AS owner_last_name, u.email AS owner_email
+     FROM dorms d
+     JOIN users u ON d.owner_id = u.id
+     WHERE d.available_rooms > 0"
+);
 $sql->execute();
 $result = $sql->get_result();
 

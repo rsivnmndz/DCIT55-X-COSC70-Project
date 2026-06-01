@@ -62,6 +62,7 @@ function renderDormCards(dorms) {
           ${amenities.includes('parking') ? '<span class="view-tag">Has Parking</span>' : ''}
           <h3>${dorm.dorm_name}</h3>
           <p class="location">${dorm.address}</p>
+          <p class="owner-name">Owner: ${escapeHtml(dorm.owner_first_name || 'Unknown')} ${escapeHtml(dorm.owner_last_name || '')}</p>
           <span class="unit-type">${roomType.charAt(0).toUpperCase() + roomType.slice(1)} Units</span>
           <span class="status-badge immediate">Immediate Avail</span>
         </div>
@@ -97,8 +98,9 @@ function renderDormCards(dorms) {
 
 function updatePanel(dorm) {
   document.querySelector('.panel-block.header-block h2').textContent = dorm.dorm_name;
+  const ownerName = dorm.owner_first_name ? `${escapeHtml(dorm.owner_first_name)} ${escapeHtml(dorm.owner_last_name)}` : 'Unknown';
   document.querySelector('.sub-facility').innerHTML =
-    `<i class="fa-solid fa-house detail-icon-img"></i> <span>${dorm.address}</span>`;
+    `<i class="fa-solid fa-house detail-icon-img"></i> <span>${dorm.address}</span><br><small>Owner: ${ownerName}</small>`;
   document.querySelector('.price-range').textContent = `PHP ${dorm.monthly_rent} a month`;
   document.querySelector('.rent-text').textContent = `PHP ${dorm.monthly_rent} a month (Deposit and Advance required)`;
   
