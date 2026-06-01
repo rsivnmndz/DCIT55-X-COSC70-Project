@@ -57,7 +57,7 @@ CREATE TABLE `bookings` (
   KEY `renter_id` (`renter_id`),
   CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`dorm_id`) REFERENCES `dorms` (`dorm_id`),
   CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`renter_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,7 +66,6 @@ CREATE TABLE `bookings` (
 
 LOCK TABLES `bookings` WRITE;
 /*!40000 ALTER TABLE `bookings` DISABLE KEYS */;
-INSERT INTO `bookings` VALUES (1,1,2,'2026-06-13');
 /*!40000 ALTER TABLE `bookings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -234,6 +233,7 @@ CREATE TABLE `users` (
   `password_hash` varchar(255) NOT NULL,
   `role` enum('student','dorm_owner') NOT NULL DEFAULT 'student',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `profile_picture` varchar(255) DEFAULT './uploads/pfps/default-profile.jpg',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -245,7 +245,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'John','Doe','johndoe@gmail.com','$2y$10$6bfSkqvCa/JsVKZj5LtNyONngig/NUxmDNvvQm5D4kUOUQdju4QtS','dorm_owner','2026-05-26 05:39:12'),(2,'Test','Account','testacc@gmail.com','$2y$10$8xcVGF6lH1k1qPyLHKe8O.sWW30b9PJCgMSG9/HruYTIXF/jCK.7a','student','2026-05-27 13:04:38'),(3,'Test','Account 2','testacc2@gmail.com','$2y$10$OTxld8NqBVVYe9yfFhTfGuCQ/66FUNix8G6DfoXFZ2XlK7y0m2aHC','dorm_owner','2026-06-01 05:30:08');
+INSERT INTO `users` VALUES (1,'John','Doe','johndoe@gmail.com','$2y$10$6bfSkqvCa/JsVKZj5LtNyONngig/NUxmDNvvQm5D4kUOUQdju4QtS','dorm_owner','2026-05-26 05:39:12','./uploads/pfps/default-profile.jpg'),(2,'Test','Account','testacc@gmail.com','$2y$10$8xcVGF6lH1k1qPyLHKe8O.sWW30b9PJCgMSG9/HruYTIXF/jCK.7a','student','2026-05-27 13:04:38','./uploads/pfps/default-profile.jpg'),(3,'Test','Account 2','testacc2@gmail.com','$2y$10$OTxld8NqBVVYe9yfFhTfGuCQ/66FUNix8G6DfoXFZ2XlK7y0m2aHC','dorm_owner','2026-06-01 05:30:08','./uploads/pfps/default-profile.jpg');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -258,4 +258,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-01 13:46:05
+-- Dump completed on 2026-06-01 14:49:30
