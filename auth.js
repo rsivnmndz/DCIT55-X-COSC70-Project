@@ -5,15 +5,27 @@ function loadAuthStatus() {
       const navRight = document.getElementById('navRightSection');
       if (navRight) {
         if (auth.isLoggedIn) {
+          let profileMenuItems = `
+            <a href="profile.html">My Profile</a>
+          `;
+          if (auth.userRole === 'student') {
+            profileMenuItems += `
+              <a href="my-bookings.html">My Bookings</a>
+              <a href="favorites.html">Favorites</a>
+            `;
+          }
+          if (auth.userRole === 'dorm_owner') {
+            profileMenuItems += `<a href="admin-dashboard.html">Dashboard</a>`;
+          }
+          
+          profileMenuItems += `<button onclick="logout()">Logout</button>`;
+          
           navRight.innerHTML = `
             <div class="profile-section" id="profileToggle">
               <img src="${escapeHtml(auth.userProfilePic)}" alt="Profile" class="profile-pic" />
               <span class="profile-name">${escapeHtml(auth.userName)}</span>
               <div class="profile-menu" id="profileMenu">
-                <a href="profile.html">My Profile</a>
-                <a href="bookings.html">My Bookings</a>
-                <a href="favorites.html">Favorites</a>
-                <button onclick="logout()">Logout</button>
+                ${profileMenuItems}
               </div>
             </div>
           `;

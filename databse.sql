@@ -57,7 +57,7 @@ CREATE TABLE `bookings` (
   KEY `renter_id` (`renter_id`),
   CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`dorm_id`) REFERENCES `dorms` (`dorm_id`),
   CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`renter_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,6 +66,7 @@ CREATE TABLE `bookings` (
 
 LOCK TABLES `bookings` WRITE;
 /*!40000 ALTER TABLE `bookings` DISABLE KEYS */;
+INSERT INTO `bookings` VALUES (1,1,2,'2026-06-13');
 /*!40000 ALTER TABLE `bookings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -146,7 +147,7 @@ CREATE TABLE `dorms` (
   PRIMARY KEY (`dorm_id`),
   KEY `owner_id` (`owner_id`),
   CONSTRAINT `dorms_ibfk_1` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -155,8 +156,39 @@ CREATE TABLE `dorms` (
 
 LOCK TABLES `dorms` WRITE;
 /*!40000 ALTER TABLE `dorms` DISABLE KEYS */;
-INSERT INTO `dorms` VALUES (1,1,'Greenview Residences','<p>Please apply for a slot here: <a href=\"#\">https://greenview-indang.com/reserve-now</a></p>\n          <p>Looking for a quiet, study-friendly environment in the heart of Indang? Located just 5 minutes from CvSU Main Campus.</p>\n          <span class=\"section-label\">Requirements:</span>\n          <ul><li>Minimum 1-year contract (2 months deposit, 1 month advance)</li><li>Periodic room inspections</li><li>Curfew: 10:00 PM</li></ul>','Indang, Cavite',14.19621884,120.88607101,6000.00,2,2,2,'2026-05-26 05:39:21','2026-05-26 05:39:21'),(2,1,'Alulod Studio Apartments','<p>Located along Indang-Mendez Rd, ideal for students with motorcycles. Parking available on site.</p>\n          <span class=\"section-label\">Requirements:</span>\n          <ul><li>Minimum 1-year contract</li><li>Motorcycle parking included</li><li>Curfew: 11:00 PM</li></ul>','Alulod, Indang, Cavite',14.20155448,120.89059621,5500.00,3,2,1,'2026-05-26 05:42:25','2026-05-26 05:42:25'),(3,1,'The Yellow Bell House','<p>Quiet female-only dormitory in Brgy. Mahabang Lupa. Study-friendly environment with strict curfew.</p>\n          <span class=\"section-label\">Requirements:</span>\n          <ul><li>Female students only</li><li>Minimum 6-month contract</li><li>Curfew: 9:00 PM</li></ul>','Indang, Cavite',14.20010355,120.88856309,4000.00,1,6,3,'2026-05-26 05:44:31','2026-05-26 05:44:31'),(4,1,'Bancod Skibidi','<p>Walking distance from CvSU. Budget-friendly option along Bancod Road.</p>\n          <span class=\"section-label\">Requirements:</span>\n          <ul><li>Minimum 6-month contract</li><li>1 month deposit, 1 month advance</li><li>Curfew: 10:00 PM</li></ul>','Bancod, Indang, Cavite',14.21131556,120.87711274,3000.00,2,4,1,'2026-05-26 05:47:20','2026-05-26 05:47:20');
+INSERT INTO `dorms` VALUES (1,1,'Greenview Residences','<p>Please apply for a slot here: <a href=\"#\">https://greenview-indang.com/reserve-now</a></p>\n          <p>Looking for a quiet, study-friendly environment in the heart of Indang? Located just 5 minutes from CvSU Main Campus.</p>\n          <span class=\"section-label\">Requirements:</span>\n          <ul><li>Minimum 1-year contract (2 months deposit, 1 month advance)</li><li>Periodic room inspections</li><li>Curfew: 10:00 PM</li></ul>','Indang, Cavite',14.19621884,120.88607101,6000.00,2,2,2,'2026-05-26 05:39:21','2026-05-26 05:39:21'),(2,1,'Alulod Studio Apartments','<p>Located along Indang-Mendez Rd, ideal for students with motorcycles. Parking available on site.</p>\n          <span class=\"section-label\">Requirements:</span>\n          <ul><li>Minimum 1-year contract</li><li>Motorcycle parking included</li><li>Curfew: 11:00 PM</li></ul>','Alulod, Indang, Cavite',14.20155448,120.89059621,5500.00,3,2,1,'2026-05-26 05:42:25','2026-05-26 05:42:25'),(3,1,'The Yellow Bell House','<p>Quiet female-only dormitory in Brgy. Mahabang Lupa. Study-friendly environment with strict curfew.</p>\n          <span class=\"section-label\">Requirements:</span>\n          <ul><li>Female students only</li><li>Minimum 6-month contract</li><li>Curfew: 9:00 PM</li></ul>','Indang, Cavite',14.20010355,120.88856309,4000.00,1,6,3,'2026-05-26 05:44:31','2026-05-26 05:44:31'),(4,1,'Bancod Skibidi','<p>Walking distance from CvSU. Budget-friendly option along Bancod Road.</p>\n          <span class=\"section-label\">Requirements:</span>\n          <ul><li>Minimum 6-month contract</li><li>1 month deposit, 1 month advance</li><li>Curfew: 10:00 PM</li></ul>','Bancod, Indang, Cavite',14.21131556,120.87711274,3000.00,2,4,1,'2026-05-26 05:47:20','2026-05-26 05:47:20'),(5,1,'Test Dorm','Test Description<div><br></div><div><ul><li>Pet Friendly</li><li>Aircon</li></ul></div>','Indang, Cavite',14.19603314,120.88686526,2500.00,2,4,3,'2026-05-27 14:21:53','2026-05-27 14:21:53');
 /*!40000 ALTER TABLE `dorms` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `favorites`
+--
+
+DROP TABLE IF EXISTS `favorites`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `favorites` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `renter_id` int(11) NOT NULL,
+  `dorm_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_favorite` (`renter_id`,`dorm_id`),
+  KEY `renter_id` (`renter_id`),
+  KEY `dorm_id` (`dorm_id`),
+  CONSTRAINT `favorites_ibfk_1` FOREIGN KEY (`renter_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`dorm_id`) REFERENCES `dorms` (`dorm_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `favorites`
+--
+
+LOCK TABLES `favorites` WRITE;
+/*!40000 ALTER TABLE `favorites` DISABLE KEYS */;
+INSERT INTO `favorites` VALUES (1,2,1,'2026-06-01 05:44:12'),(2,2,2,'2026-06-01 05:44:19');
+/*!40000 ALTER TABLE `favorites` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -204,7 +236,7 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -213,7 +245,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'John','Doe','johndoe@gmail.com','1234','dorm_owner','2026-05-26 05:39:12');
+INSERT INTO `users` VALUES (1,'John','Doe','johndoe@gmail.com','$2y$10$6bfSkqvCa/JsVKZj5LtNyONngig/NUxmDNvvQm5D4kUOUQdju4QtS','dorm_owner','2026-05-26 05:39:12'),(2,'Test','Account','testacc@gmail.com','$2y$10$8xcVGF6lH1k1qPyLHKe8O.sWW30b9PJCgMSG9/HruYTIXF/jCK.7a','student','2026-05-27 13:04:38'),(3,'Test','Account 2','testacc2@gmail.com','$2y$10$OTxld8NqBVVYe9yfFhTfGuCQ/66FUNix8G6DfoXFZ2XlK7y0m2aHC','dorm_owner','2026-06-01 05:30:08');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -226,4 +258,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-26 15:03:01
+-- Dump completed on 2026-06-01 13:46:05

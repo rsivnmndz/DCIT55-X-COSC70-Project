@@ -11,6 +11,7 @@ const markerLayer = L.layerGroup().addTo(map);
 let dormData = [];
 let filteredDorms = [];
 let amenitiesByDorm = {};
+let favoritesByDorm = {};
 let selectedFilters = {
   amenities: [],
   roomType: []
@@ -53,19 +54,37 @@ function renderDormCards(dorms) {
 
     const amenities = amenitiesByDorm[dorm.dorm_id] || [];
     const roomType = dorm.room_capacity > 1 ? 'shared' : 'solo';
+    const isFavorite = favoritesByDorm[dorm.dorm_id] || false;
     
     card.innerHTML = `
-      ${amenities.includes('parking') ? '<span class="view-tag">Has Parking</span>' : ''}
-      <h3>${dorm.dorm_name}</h3>
-      <p class="location">${dorm.address}</p>
-      <span class="unit-type">${roomType.charAt(0).toUpperCase() + roomType.slice(1)} Units</span>
-      <span class="status-badge immediate">Immediate Avail</span>
+      <div style="display: flex; justify-content: space-between; align-items: start; gap: 10px;">
+        <div style="flex: 1;">
+          ${amenities.includes('parking') ? '<span class="view-tag">Has Parking</span>' : ''}
+          <h3>${dorm.dorm_name}</h3>
+          <p class="location">${dorm.address}</p>
+          <span class="unit-type">${roomType.charAt(0).toUpperCase() + roomType.slice(1)} Units</span>
+          <span class="status-badge immediate">Immediate Avail</span>
+        </div>
+        <button class="favorite-heart-btn ${isFavorite ? 'active' : ''}" data-dorm-id="${dorm.dorm_id}" title="Add to favorites">
+          <i class="fas fa-heart"></i>
+        </button>
+      </div>
     `;
 
-    card.addEventListener('click', () => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.favorite-heart-btn')) {
+        e.stopPropagation();
+        return;
+      }
       document.querySelectorAll('.dorm-card').forEach(c => c.classList.remove('active'));
       card.classList.add('active');
       updatePanel(dorm);
+    });
+
+    const favoriteBtn = card.querySelector('.favorite-heart-btn');
+    favoriteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleFavorite(dorm.dorm_id, favoriteBtn);
     });
 
     feed.appendChild(card);
@@ -224,4 +243,57 @@ document.addEventListener('DOMContentLoaded', function() {
       applyFilters();
     });
   });
+
+  // Load favorites on page load
+  loadUserFavorites();
 });
+
+function loadUserFavorites() {
+  // Check all dorms to see which are favorited
+  dormData.forEach(dorm => {
+    fetch(`favorites.php?action=check&dorm_id=${dorm.dorm_id}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.is_favorite) {
+          favoritesByDorm[dorm.dorm_id] = true;
+          updateFavoriteButton(dorm.dorm_id, true);
+        }
+      })
+      .catch(err => console.error('Error checking favorite:', err));
+  });
+}
+
+function updateFavoriteButton(dormId, isFavorite) {
+  const btn = document.querySelector(`.favorite-heart-btn[data-dorm-id="${dormId}"]`);
+  if (btn) {
+    if (isFavorite) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  }
+}
+
+function toggleFavorite(dormId, button) {
+  const formData = new FormData();
+  formData.append('dorm_id', dormId);
+  formData.append('action', 'toggle');
+
+  fetch('favorites.php', {
+    method: 'POST',
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      if (data.action === 'added') {
+        favoritesByDorm[dormId] = true;
+        updateFavoriteButton(dormId, true);
+      } else if (data.action === 'removed') {
+        favoritesByDorm[dormId] = false;
+        updateFavoriteButton(dormId, false);
+      }
+    }
+  })
+  .catch(err => console.error('Error toggling favorite:', err));
+}
