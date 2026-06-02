@@ -2,7 +2,12 @@
 session_start();
 include ("./database/database.php");
 
-$owner_id = $_SESSION['id'];
+if (!isset($_SESSION['id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'dorm_owner') {
+    header('Location: login.html?error=You must be logged in as a dorm owner to add a listing');
+    exit();
+}
+
+$owner_id = (int) $_SESSION['id'];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
