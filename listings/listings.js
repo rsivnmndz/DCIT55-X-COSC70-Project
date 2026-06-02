@@ -77,7 +77,6 @@ function renderDormCards(dorms) {
           ${amenities.includes('parking') ? '<span class="view-tag">Has Parking</span>' : ''}
           <h3>${dorm.dorm_name}</h3>
           <p class="location">${dorm.address}</p>
-          <p class="owner-name">Owner: ${escapeHtml(dorm.owner_first_name || 'Unknown')} ${escapeHtml(dorm.owner_last_name || '')}</p>
           <span class="unit-type">${roomType.charAt(0).toUpperCase() + roomType.slice(1)} Units</span>
           <span class="status-badge immediate">Immediate Avail</span>
         </div>
@@ -229,40 +228,19 @@ document.addEventListener('DOMContentLoaded', function() {
       this.classList.toggle('active');
       const filter = this.dataset.filter;
       
-      if (filter === 'aircon') {
-        const index = selectedFilters.amenities.indexOf('aircon');
-        if (index > -1) {
-          selectedFilters.amenities.splice(index, 1);
-        } else {
-          selectedFilters.amenities.push('aircon');
-        }
-      } else if (filter === 'parking') {
-        const index = selectedFilters.amenities.indexOf('parking');
-        if (index > -1) {
-          selectedFilters.amenities.splice(index, 1);
-        } else {
-          selectedFilters.amenities.push('parking');
-        }
-      } else if (filter === 'solo') {
-        const index = selectedFilters.roomType.indexOf('solo');
+      if (['solo', 'shared'].includes(filter)) {
+        const index = selectedFilters.roomType.indexOf(filter);
         if (index > -1) {
           selectedFilters.roomType.splice(index, 1);
         } else {
-          selectedFilters.roomType.push('solo');
+          selectedFilters.roomType.push(filter);
         }
-      } else if (filter === 'shared') {
-        const index = selectedFilters.roomType.indexOf('shared');
-        if (index > -1) {
-          selectedFilters.roomType.splice(index, 1);
-        } else {
-          selectedFilters.roomType.push('shared');
-        }
-      } else if (filter === 'wifi') {
-        const index = selectedFilters.amenities.indexOf('wifi');
+      } else {
+        const index = selectedFilters.amenities.indexOf(filter);
         if (index > -1) {
           selectedFilters.amenities.splice(index, 1);
         } else {
-          selectedFilters.amenities.push('wifi');
+          selectedFilters.amenities.push(filter);
         }
       }
       
@@ -270,14 +248,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Load favorites on page load
   loadUserFavorites();
 });
 
 function loadUserFavorites() {
-  // Check all dorms to see which are favorited
   dormData.forEach(dorm => {
-    fetch(`listings/favorites.php?action=check&dorm_id=${dorm.dorm_id}`)
+    fetch(`favorites.php?action=check&dorm_id=${dorm.dorm_id}`)
       .then(res => res.json())
       .then(data => {
         if (data.is_favorite) {

@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $available_rooms = $_POST['available_rooms'];
     $total_rooms = $_POST['total_rooms'];
     $room_capacity = $_POST['room_capacity'];
+    $amenities = isset($_POST['amenities']) ? json_decode($_POST['amenities'], true) : [];
 
     $query = "
     INSERT INTO dorms (
@@ -42,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($stmt->execute()) {
         $dorm_id = $conn->insert_id;
 
+<<<<<<< HEAD
         // 1. Set the correct physical folder path (relative to this admin file)
         $uploadDir = "../uploads/dorms/";
 
@@ -49,6 +51,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
+=======
+        if (!empty($amenities)) {
+          $amenityQuery = "SELECT amenity_id FROM amenities WHERE amenity_name = ?";
+          $amenityStmt = $conn->prepare($amenityQuery);
+          
+          foreach ($amenities as $amenityName) {
+            $amenityStmt->bind_param("s", $amenityName);
+            $amenityStmt->execute();
+            $amenityResult = $amenityStmt->get_result();
+            
+            if ($amenityRow = $amenityResult->fetch_assoc()) {
+              $amenityId = $amenityRow['amenity_id'];
+              $insertAmenityQuery = "INSERT INTO dorm_amenities (dorm_id, amenity_id) VALUES (?, ?)";
+              $insertAmenityStmt = $conn->prepare($insertAmenityQuery);
+              $insertAmenityStmt->bind_param("ii", $dorm_id, $amenityId);
+              $insertAmenityStmt->execute();
+            }
+          }
+        }
+
+        $uploadDir = "../uploads/dorm_images/";
+>>>>>>> 351e500b078690a8a757a2ce9b9e94688b14a308
 
         foreach ($_FILES['dorm_images']['tmp_name'] as $key => $tmp_name) {
             
