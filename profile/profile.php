@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'upload-pfp') {
         exit;
     }
     
-    $upload_dir = __DIR__ . '/uploads/pfps';
+    $upload_dir = __DIR__ . '/../uploads/pfps';
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0755, true);
     }
@@ -122,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'upload-pfp') {
     $file_ext = pathinfo($file['name'], PATHINFO_EXTENSION);
     $new_filename = 'pfp_' . $user_id . '_' . time() . '.' . $file_ext;
     $file_path = $upload_dir . '/' . $new_filename;
-    $relative_path = './uploads/pfps/' . $new_filename;
+    $relative_path = '../uploads/pfps/' . $new_filename;
 
     if (!move_uploaded_file($file['tmp_name'], $file_path)) {
         http_response_code(500);

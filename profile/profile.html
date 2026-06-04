@@ -573,12 +573,14 @@
         }
         uploadOverlay.innerHTML = originalHTML;
         uploadOverlay.style.pointerEvents = 'auto';
+        document.getElementById('profilePictureInput').value = '';
       })
       .catch(err => {
         console.error('Error uploading profile picture:', err);
         showAlert('Failed to upload profile picture', 'error');
         uploadOverlay.innerHTML = originalHTML;
         uploadOverlay.style.pointerEvents = 'auto';
+        document.getElementById('profilePictureInput').value = '';
       });
     }
 
