@@ -420,7 +420,7 @@
   <div class="overlay">
     <nav class="navbar">
       <div class="left-nav">
-        <img src="../images/finals-logo.png" alt="Logo" class="logo">
+        <img src="../images/logo.png" alt="Logo" class="logo">
         <ul class="nav-links">
           <li><a href="../homepage/homepage.html">Home</a></li>
           <li><a href="../listings/listings.html">Listings</a></li>
@@ -573,12 +573,14 @@
         }
         uploadOverlay.innerHTML = originalHTML;
         uploadOverlay.style.pointerEvents = 'auto';
+        document.getElementById('profilePictureInput').value = '';
       })
       .catch(err => {
         console.error('Error uploading profile picture:', err);
         showAlert('Failed to upload profile picture', 'error');
         uploadOverlay.innerHTML = originalHTML;
         uploadOverlay.style.pointerEvents = 'auto';
+        document.getElementById('profilePictureInput').value = '';
       });
     }
 

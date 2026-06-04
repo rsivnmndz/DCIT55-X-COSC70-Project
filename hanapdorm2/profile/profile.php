@@ -28,6 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'get') {
         exit;
     }
     
+    $user['profile_picture'] = !empty($user['profile_picture']) ? $user['profile_picture'] : '../uploads/pfps/default-profile.jpg';
+    
     header('Content-Type: application/json');
     echo json_encode(['user' => $user]);
     exit;
@@ -88,17 +90,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'update') {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'upload-pfp') {
     if (!isset($_FILES['profile_picture'])) {
         http_response_code(400);
-        echo json_encode(['error' => 'No file provided']);
+        $err = 'No file provided.';
+        if (isset($_SERVER['CONTENT_LENGTH']) && (int)$_SERVER['CONTENT_LENGTH'] > 0 && empty($_POST)) {
+            $err = 'File too large. Exceeds server configuration limit.';
+        }
+        echo json_encode(['error' => $err]);
         exit;
     }
     
     $file = $_FILES['profile_picture'];
-    $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+    $allowed_types = ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif', 'image/webp'];
     $max_size = 5 * 1024 * 1024; // 5MB
     
     if (!in_array($file['type'], $allowed_types)) {
         http_response_code(400);
-        echo json_encode(['error' => 'Invalid file type. Only JPEG, PNG, and GIF allowed']);
+        echo json_encode(['error' => 'Invalid file type. Only JPEG, PNG, GIF, and WEBP allowed']);
         exit;
     }
     
@@ -110,24 +116,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'upload-pfp') {
     
     if ($file['error'] !== UPLOAD_ERR_OK) {
         http_response_code(400);
-        echo json_encode(['error' => 'Upload failed']);
+        $err_msg = 'Upload failed (Code: ' . $file['error'] . ')';
+        if ($file['error'] === UPLOAD_ERR_INI_SIZE || $file['error'] === UPLOAD_ERR_FORM_SIZE) {
+            $err_msg = 'File exceeds maximum upload size set in server.';
+        }
+        echo json_encode(['error' => $err_msg]);
         exit;
     }
     
-    $upload_dir = __DIR__ . '/uploads/pfps';
+    $upload_dir = __DIR__ . '/../uploads/pfps';
     if (!is_dir($upload_dir)) {
-        mkdir($upload_dir, 0755, true);
+        if (!mkdir($upload_dir, 0777, true)) {
+            http_response_code(500);
+            echo json_encode(['error' => 'Failed to create upload directory']);
+            exit;
+        }
     }
+    @chmod($upload_dir, 0777); // Ensure the folder forces write capabilities
     
     $file_ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-    $new_filename = 'pfp_' . $user_id . '_' . time() . '.' . $file_ext;
+    $clean_filename = preg_replace("/[^a-zA-Z0-9]/", "", pathinfo($file['name'], PATHINFO_FILENAME));
+    $new_filename = 'pfp_' . $user_id . '_' . time() . '_' . $clean_filename . '.' . $file_ext;
     $file_path = $upload_dir . '/' . $new_filename;
-    $relative_path = './uploads/pfps/' . $new_filename;
+    $relative_path = '../uploads/pfps/' . $new_filename;
 
-    if (!move_uploaded_file($file['tmp_name'], $file_path)) {
-        http_response_code(500);
-        echo json_encode(['error' => 'Failed to save file']);
-        exit;
+    if (!@move_uploaded_file($file['tmp_name'], $file_path)) {
+        if (!@copy($file['tmp_name'], $file_path)) {
+            $error = error_get_last();
+            $sys_msg = $error ? $error['message'] : 'Permission denied';
+            http_response_code(500);
+            echo json_encode(['error' => 'Failed to save file. System message: ' . $sys_msg]);
+            exit;
+        }
     }
     
     $updateQuery = 'UPDATE users SET profile_picture = ? WHERE id = ?';

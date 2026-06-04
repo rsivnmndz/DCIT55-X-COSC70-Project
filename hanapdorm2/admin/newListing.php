@@ -38,37 +38,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ";
 
     $stmt = $conn->prepare($query); 
-    $stmt->bind_param("isssdddiii", $owner_id, $dorm_name, $description, $address, $latitude, $longitude, $monthly_rent, $available_rooms, $total_rooms, $room_capacity);
+    $stmt->bind_param("issssddiii", $owner_id, $dorm_name, $description, $address, $latitude, $longitude, $monthly_rent, $available_rooms, $total_rooms, $room_capacity);
 
     if ($stmt->execute()) {
         $dorm_id = $conn->insert_id;
 
         if (!empty($amenities)) {
-            $amenityQuery = "SELECT amenity_id FROM amenities WHERE amenity_name = ?";
-            $amenityStmt = $conn->prepare($amenityQuery);
+          $amenityQuery = "SELECT amenity_id FROM amenities WHERE amenity_name = ?";
+          $amenityStmt = $conn->prepare($amenityQuery);
+          
+          foreach ($amenities as $amenityName) {
+            $amenityStmt->bind_param("s", $amenityName);
+            $amenityStmt->execute();
+            $amenityResult = $amenityStmt->get_result();
             
-            foreach ($amenities as $amenityName) {
-                $amenityStmt->bind_param("s", $amenityName);
-                $amenityStmt->execute();
-                $amenityResult = $amenityStmt->get_result();
-                
-                if ($amenityRow = $amenityResult->fetch_assoc()) {
-                    $amenityId = $amenityRow['amenity_id'];
-                    $insertAmenityQuery = "INSERT INTO dorm_amenities (dorm_id, amenity_id) VALUES (?, ?)";
-                    $insertAmenityStmt = $conn->prepare($insertAmenityQuery);
-                    $insertAmenityStmt->bind_param("ii", $dorm_id, $amenityId);
-                    $insertAmenityStmt->execute();
-                }
+            if ($amenityRow = $amenityResult->fetch_assoc()) {
+              $amenityId = $amenityRow['amenity_id'];
+              $insertAmenityQuery = "INSERT INTO dorm_amenities (dorm_id, amenity_id) VALUES (?, ?)";
+              $insertAmenityStmt = $conn->prepare($insertAmenityQuery);
+              $insertAmenityStmt->bind_param("ii", $dorm_id, $amenityId);
+              $insertAmenityStmt->execute();
             }
+          }
         }
 
-        // 1. Set the correct physical folder path (relative to this admin file)
-        $uploadDir = "../uploads/dorms/";
-
-        // Create the directory if it doesn't exist yet to prevent errors
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
-        }
+        $uploadDir = "../uploads/dorm_images/";
 
         foreach ($_FILES['dorm_images']['tmp_name'] as $key => $tmp_name) {
             

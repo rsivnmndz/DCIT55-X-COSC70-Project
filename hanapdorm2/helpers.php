@@ -26,6 +26,10 @@ function set_user_session(array $user): void
     $_SESSION['last_name'] = $user['last_name'];
     $_SESSION['email'] = $user['email'];
     $_SESSION['role'] = $user['role'];
+    
+    if (!empty($user['profile_picture'])) {
+        $_SESSION['profile_picture'] = $user['profile_picture'];
+    }
 }
 
 function login_redirect_for_role(string $role): string

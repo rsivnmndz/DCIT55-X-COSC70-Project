@@ -31,9 +31,16 @@ function loadAuthStatus() {
             profileMenuItems += `<a href="${authLink('../admin/admin-dashboard.html')}">Dashboard</a>`;
           }
           profileMenuItems += `<button onclick="logout()">Logout</button>`;
+          
+          let headerButtons = '';
+          if (auth.userRole === 'student') {
+            headerButtons = `<a href="${authLink('../listings/my-bookings.html')}" class="nav-link" style="margin-right: 15px; text-decoration: none; font-weight: 600; color: inherit; display: flex; align-items: center;">My Bookings</a>`;
+          }
+
           navRight.innerHTML = `
+            ${headerButtons}
             <div class="profile-section" id="profileToggle">
-              <img src="${escapeHtml(auth.userProfilePic)}" alt="Profile" class="profile-pic" />
+              <img src="${escapeHtml(authLink(auth.userProfilePic.replace(/^\.\//, '../')))}" alt="Profile" class="profile-pic" />
               <span class="profile-name">${escapeHtml(auth.userName)}</span>
               <div class="profile-menu" id="profileMenu">
                 ${profileMenuItems}

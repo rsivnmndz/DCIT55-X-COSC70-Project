@@ -52,14 +52,12 @@ CREATE TABLE `bookings` (
   `dorm_id` int(11) NOT NULL,
   `renter_id` int(11) NOT NULL,
   `move_in_date` date DEFAULT NULL,
-  `status` varchar(20) DEFAULT 'pending',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`booking_id`),
   KEY `dorm_id` (`dorm_id`),
   KEY `renter_id` (`renter_id`),
   CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`dorm_id`) REFERENCES `dorms` (`dorm_id`),
   CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`renter_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,7 +66,6 @@ CREATE TABLE `bookings` (
 
 LOCK TABLES `bookings` WRITE;
 /*!40000 ALTER TABLE `bookings` DISABLE KEYS */;
-INSERT INTO `bookings` VALUES (1,3,1,'2026-06-11','approved','2026-06-03 01:44:46');
 /*!40000 ALTER TABLE `bookings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -95,7 +92,7 @@ CREATE TABLE `dorm_amenities` (
 
 LOCK TABLES `dorm_amenities` WRITE;
 /*!40000 ALTER TABLE `dorm_amenities` DISABLE KEYS */;
-INSERT INTO `dorm_amenities` VALUES (1,1),(1,4),(1,5),(2,2),(2,3),(2,5),(3,1),(3,2),(3,3),(4,1),(4,3);
+INSERT INTO `dorm_amenities` VALUES (1,1),(1,4),(1,5),(2,2),(2,3),(2,5),(3,1),(3,2),(3,3),(4,1),(4,3),(6,5),(6,6),(6,7),(6,8),(6,9);
 /*!40000 ALTER TABLE `dorm_amenities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -165,7 +162,7 @@ CREATE TABLE `dorms` (
 
 LOCK TABLES `dorms` WRITE;
 /*!40000 ALTER TABLE `dorms` DISABLE KEYS */;
-INSERT INTO `dorms` VALUES (1,1,'Greenview Residences','<p>Please apply for a slot here: <a href=\"#\">https://greenview-indang.com/reserve-now</a></p>\n          <p>Looking for a quiet, study-friendly environment in the heart of Indang? Located just 5 minutes from CvSU Main Campus.</p>\n          <span class=\"section-label\">Requirements:</span>\n          <ul><li>Minimum 1-year contract (2 months deposit, 1 month advance)</li><li>Periodic room inspections</li><li>Curfew: 10:00 PM</li></ul>','Indang, Cavite',14.19621884,120.88607101,6000.00,2,2,2,'2026-05-26 05:39:21','2026-05-26 05:39:21'),(2,1,'Alulod Studio Apartments','<p>Located along Indang-Mendez Rd, ideal for students with motorcycles. Parking available on site.</p>\n          <span class=\"section-label\">Requirements:</span>\n          <ul><li>Minimum 1-year contract</li><li>Motorcycle parking included</li><li>Curfew: 11:00 PM</li></ul>','Alulod, Indang, Cavite',14.20155448,120.89059621,5500.00,3,2,1,'2026-05-26 05:42:25','2026-05-26 05:42:25'),(3,1,'The Yellow Bell House','<p>Quiet female-only dormitory in Brgy. Mahabang Lupa. Study-friendly environment with strict curfew.</p>\n          <span class=\"section-label\">Requirements:</span>\n          <ul><li>Female students only</li><li>Minimum 6-month contract</li><li>Curfew: 9:00 PM</li></ul>','Indang, Cavite',14.20010355,120.88856309,4000.00,1,6,3,'2026-05-26 05:44:31','2026-05-26 05:44:31'),(4,1,'Bancod Skibidi','<p>Walking distance from CvSU. Budget-friendly option along Bancod Road.</p>\n          <span class=\"section-label\">Requirements:</span>\n          <ul><li>Minimum 6-month contract</li><li>1 month deposit, 1 month advance</li><li>Curfew: 10:00 PM</li></ul>','Bancod, Indang, Cavite',14.21131556,120.87711274,3000.00,2,4,1,'2026-05-26 05:47:20','2026-05-26 05:47:20'),(5,1,'Test Dorm','Test Description<div><br></div><div><ul><li>Pet Friendly</li><li>Aircon</li></ul></div>','Indang, Cavite',14.19603314,120.88686526,2500.00,2,4,3,'2026-05-27 14:21:53','2026-05-27 14:21:53');
+INSERT INTO `dorms` VALUES (1,1,'Greenview Residences','<p>Please apply for a slot here: <a href=\"#\">https://greenview-indang.com/reserve-now</a></p>\n          <p>Looking for a quiet, study-friendly environment in the heart of Indang? Located just 5 minutes from CvSU Main Campus.</p>\n          <span class=\"section-label\">Requirements:</span>\n          <ul><li>Minimum 1-year contract (2 months deposit, 1 month advance)</li><li>Periodic room inspections</li><li>Curfew: 10:00 PM</li></ul>','Indang, Cavite',14.19621884,120.88607101,6000.00,2,2,2,'2026-05-26 05:39:21','2026-05-26 05:39:21'),(2,1,'Alulod Studio Apartments','<p>Located along Indang-Mendez Rd, ideal for students with motorcycles. Parking available on site.</p>\n          <span class=\"section-label\">Requirements:</span>\n          <ul><li>Minimum 1-year contract</li><li>Motorcycle parking included</li><li>Curfew: 11:00 PM</li></ul>','Alulod, Indang, Cavite',14.20155448,120.89059621,5500.00,3,2,1,'2026-05-26 05:42:25','2026-05-26 05:42:25'),(3,1,'The Yellow Bell House','<p>Quiet female-only dormitory in Brgy. Mahabang Lupa. Study-friendly environment with strict curfew.</p>\n          <span class=\"section-label\">Requirements:</span>\n          <ul><li>Female students only</li><li>Minimum 6-month contract</li><li>Curfew: 9:00 PM</li></ul>','Indang, Cavite',14.20010355,120.88856309,4000.00,1,6,3,'2026-05-26 05:44:31','2026-05-26 05:44:31'),(4,1,'Bancod Skibidi','<p>Walking distance from CvSU. Budget-friendly option along Bancod Road.</p>\n          <span class=\"section-label\">Requirements:</span>\n          <ul><li>Minimum 6-month contract</li><li>1 month deposit, 1 month advance</li><li>Curfew: 10:00 PM</li></ul>','Bancod, Indang, Cavite',14.21131556,120.87711274,3000.00,2,4,1,'2026-05-26 05:47:20','2026-05-26 05:47:20'),(5,1,'Test Dorm','Test Description<div><br></div><div><ul><li>Pet Friendly</li><li>Aircon</li></ul></div>','Indang, Cavite',14.19603314,120.88686526,2500.00,2,4,3,'2026-05-27 14:21:53','2026-05-27 14:21:53'),(6,4,'Girl''s only dormatory','<span class=\"section-label\">Requirements:</span>\n<ul><li>6 months minimum contract</li></ul>\n<p>Included in the rental fee: electricity, internet connection, and water bill.</p>\n<p>Features and amenities:</p>\n<ul><li>Allowed to cook using gas stove or mini kalan (no hassle with butane)</li><li>Laundry area available</li><li>Ceiling fan provided in the room (no need to bring your own electric fan)</li><li>Spacious study area</li><li>Good lighting and ventilation</li><li>Adequate CR to accommodate the number of people in the dorm</li><li>Hangout area (tambayan)</li><li>Very accessible: 5 mins walk from school, near pharmacy, establishments (Dali, Alfa, Osave), and karinderya/food stalls</li></ul>','Indang, Cavite',14.19500000,120.88500000,2500.00,1,1,4,'2026-06-03 10:00:00','2026-06-03 10:00:00');
 /*!40000 ALTER TABLE `dorms` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -255,7 +252,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'John','Doe','johndoe@gmail.com','$2y$10$6bfSkqvCa/JsVKZj5LtNyONngig/NUxmDNvvQm5D4kUOUQdju4QtS','dorm_owner','2026-05-26 05:39:12','./uploads/pfps/default-profile.jpg'),(2,'Test','Account','testacc@gmail.com','$2y$10$8xcVGF6lH1k1qPyLHKe8O.sWW30b9PJCgMSG9/HruYTIXF/jCK.7a','student','2026-05-27 13:04:38','./uploads/pfps/default-profile.jpg'),(3,'Test','Account 2','testacc2@gmail.com','$2y$10$OTxld8NqBVVYe9yfFhTfGuCQ/66FUNix8G6DfoXFZ2XlK7y0m2aHC','dorm_owner','2026-06-01 05:30:08','./uploads/pfps/default-profile.jpg');
+INSERT INTO `users` VALUES (1,'John','Doe','johndoe@gmail.com','$2y$10$6bfSkqvCa/JsVKZj5LtNyONngig/NUxmDNvvQm5D4kUOUQdju4QtS','dorm_owner','2026-05-26 05:39:12','./uploads/pfps/default-profile.jpg'),(2,'Test','Account','testacc@gmail.com','$2y$10$8xcVGF6lH1k1qPyLHKe8O.sWW30b9PJCgMSG9/HruYTIXF/jCK.7a','student','2026-05-27 13:04:38','./uploads/pfps/default-profile.jpg'),(3,'Test','Account 2','testacc2@gmail.com','$2y$10$OTxld8NqBVVYe9yfFhTfGuCQ/66FUNix8G6DfoXFZ2XlK7y0m2aHC','dorm_owner','2026-06-01 05:30:08','./uploads/pfps/default-profile.jpg'),(4,'Zhaila Denisse','Gentilizo','zhaigentilizo@gmail.com','$2y$10$8xcVGF6lH1k1qPyLHKe8O.sWW30b9PJCgMSG9/HruYTIXF/jCK.7a','dorm_owner','2026-06-03 10:00:00','./uploads/pfps/default-profile.jpg');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -268,4 +265,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-03  9:52:09
+-- Dump completed on 2026-06-02 15:12:29
